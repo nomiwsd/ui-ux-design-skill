@@ -1,6 +1,6 @@
 {
   "name": "uiux-storybook-architect",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Interview-first UI/UX design skill + 21 slash commands for Claude Code, Codex, Antigravity, Cursor, Windsurf and VS Code Copilot. Turns a vague brief into a buildable Design Storybook: tokens, typography, color, dark mode, component specs, page blueprints, a full motion spec (GSAP, Framer Motion, Three.js) and an accessibility gate.",
   "type": "module",
   "bin": {

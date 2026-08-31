@@ -1,39 +1,68 @@
 # Publishing and releases
 
-This repository publishes `uiux-storybook-architect` to npm and creates a matching GitHub release from a version tag.
+This repository publishes `uiux-storybook-architect` to npm and creates a matching GitHub release from a `vX.Y.Z` tag.
 
-## One-time setup
+## Release architecture
 
-1. Confirm that you have publish access to the npm package.
-2. Create a granular npm access token with read/write access to `uiux-storybook-architect`.
-3. Add it to the GitHub repository as an Actions secret named `NPM_TOKEN`:
-   `Settings → Secrets and variables → Actions → New repository secret`.
-4. Keep the repository's Actions workflow permissions enabled. The publish workflow uses `id-token: write` to attach npm provenance.
+- `.github/workflows/ci.yml` validates pushes and pull requests on Windows and Linux with Node.js 18, 22, and 24.
+- `.github/workflows/publish.yml` validates version tags, publishes an unpublished version to npm with provenance, and creates the GitHub release.
+- If a version was published manually before its tag was pushed, the workflow skips the duplicate npm upload and still creates the GitHub release.
 
-For the first release of an unclaimed package name, publish once from an authenticated local shell or run the tag workflow with a token that can create public packages.
+## One-time npm authentication
 
-## Verify before release
+Use one of these methods. Trusted publishing is recommended because it does not store a long-lived npm token in GitHub.
+
+### Option A: npm trusted publishing
+
+After the package exists on npm:
+
+1. Open the package on npmjs.com.
+2. Open **Settings → Trusted Publisher**.
+3. Choose GitHub Actions.
+4. Enter:
+
+   - organization or user: `nomiwsd`
+   - repository: `ui-ux-design-skill`
+   - workflow filename: `publish.yml`
+   - environment: leave empty unless the workflow is updated to use one
+
+5. Save the trusted publisher.
+
+The workflow already grants `id-token: write` and publishes with `--provenance`.
+
+### Option B: GitHub Actions secret
+
+1. Create a granular npm access token with read/write access to `uiux-storybook-architect`.
+2. In GitHub, open `Settings → Secrets and variables → Actions`.
+3. Add the token as a repository secret named `NPM_TOKEN`.
+
+When `NPM_TOKEN` exists, the workflow uses it. Otherwise it uses npm trusted publishing.
+
+## Pre-release checks
+
+Start with a clean working tree, then run:
 
 ```bash
 npm ci
 npm run check
 ```
 
-`npm run check` runs all tests and `npm pack --dry-run`. The tarball should contain only `bin/`, `src/`, `README.md`, and `LICENSE` plus npm-generated package metadata.
+`npm run check` runs the tests and `npm pack --dry-run`. The tarball should contain only `bin/`, `src/`, `README.md`, and `LICENSE`, plus npm-generated metadata.
 
-You can also test the real tarball in a temporary project:
+To smoke-test the real tarball:
 
 ```bash
 npm pack
-npx ./uiux-storybook-architect-1.1.0.tgz init --ide claude --dest ./package-smoke-test --yes
-npx ./uiux-storybook-architect-1.1.0.tgz doctor --dest ./package-smoke-test
+npx ./uiux-storybook-architect-*.tgz version
+npx ./uiux-storybook-architect-*.tgz init --ide claude --dest ./package-smoke-test --yes
+npx ./uiux-storybook-architect-*.tgz doctor --dest ./package-smoke-test
 ```
 
-Delete the generated tarball and smoke-test directory after inspection.
+Remove the tarball and temporary project after inspection.
 
-## Release through CI/CD
+## Create a release
 
-Choose the correct semantic-version increment:
+Choose the semantic-version increment:
 
 ```bash
 npm version patch   # fixes and documentation
@@ -41,7 +70,7 @@ npm version minor   # backward-compatible features
 npm version major   # breaking behavior or structure
 ```
 
-`npm version` updates `package.json` and `package-lock.json`, creates a commit, and creates a matching `vX.Y.Z` tag. Push the commit and tag:
+This updates `package.json` and `package-lock.json`, creates a version commit, and adds the matching Git tag. Push both:
 
 ```bash
 git push origin main --follow-tags
@@ -49,34 +78,47 @@ git push origin main --follow-tags
 
 The `Publish` workflow then:
 
-1. installs from the lockfile;
+1. installs exactly from `package-lock.json`;
 2. runs the full test suite;
-3. verifies that the Git tag matches `package.json`;
-4. publishes the public npm package with provenance; and
-5. creates a GitHub release with generated notes.
+3. verifies that `vX.Y.Z` matches the package version;
+4. checks whether that exact version already exists on npm;
+5. publishes it with provenance when needed; and
+6. creates a GitHub release with generated notes.
 
-Monitor the run under the repository's **Actions** tab. A failed test or a mismatched tag stops the release before publication.
+Monitor the run in the repository's **Actions** tab. Tests, tag mismatch, npm authentication, or publication errors stop the release.
 
-If that exact package version was published manually first, the workflow detects it, skips the duplicate npm upload, and still creates the matching GitHub release.
+## Manual recovery
 
-## Manual npm publish
-
-Use this only when the release workflow is unavailable:
+Use manual npm publishing only when the workflow cannot publish:
 
 ```bash
-npm login
+npm login --auth-type=web
 npm run check
-npm publish --access public --provenance
+npm publish --access public
 ```
 
-Then create and push the matching Git tag if one does not already exist.
+After the package is live, push the matching tag. The workflow detects the existing npm version and creates the GitHub release without publishing twice.
+
+Do not delete or overwrite a published npm version. Fix the issue, increment the version, and publish a new release.
 
 ## Verify the public release
 
 ```bash
-npm view uiux-storybook-architect version
-npx uiux-storybook-architect@latest version
-npx uiux-storybook-architect@latest init --ide claude --dest ./release-smoke-test --yes
+npm view uiux-storybook-architect name version dist-tags.latest repository.url --json
+npx --yes uiux-storybook-architect@latest version
 ```
 
-Confirm the GitHub release uses the same version and that its CI and Publish checks are green.
+For a clean installation smoke test:
+
+```bash
+npx --yes uiux-storybook-architect@latest init --ide claude --dest ./release-smoke-test --yes
+npx --yes uiux-storybook-architect@latest doctor --dest ./release-smoke-test
+```
+
+Finally verify:
+
+- the npm page shows the expected README and version;
+- the GitHub repository is public;
+- CI and Publish workflows are green;
+- the GitHub release tag matches npm; and
+- the release smoke-test directory contains the skill and all 21 commands.

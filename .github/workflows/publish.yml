@@ -12,6 +12,8 @@ permissions:
 jobs:
   npm:
     runs-on: ubuntu-latest
+    env:
+      HAS_NPM_TOKEN: ${{ secrets.NPM_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,7 +25,7 @@ jobs:
       - run: npm test
       - name: Verify tag matches package version
         shell: bash
-        run: test "${GITHUB_REF_NAME}" = "v$(node -p 'require(\"./package.json\").version')"
+        run: test "${GITHUB_REF_NAME}" = "v$(node -p 'require("./package.json").version')"
       - name: Check whether this version is already published
         id: registry
         shell: bash
@@ -36,11 +38,14 @@ jobs:
           else
             echo "published=false" >> "${GITHUB_OUTPUT}"
           fi
-      - name: Publish to npm
-        if: steps.registry.outputs.published != 'true'
+      - name: Publish to npm with repository secret
+        if: steps.registry.outputs.published != 'true' && env.HAS_NPM_TOKEN == 'true'
         run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm with trusted publishing
+        if: steps.registry.outputs.published != 'true' && env.HAS_NPM_TOKEN != 'true'
+        run: npm publish --access public --provenance
       - name: Create GitHub release
         run: gh release create "${GITHUB_REF_NAME}" --generate-notes --verify-tag
         env:
