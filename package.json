@@ -1,0 +1,61 @@
+{
+  "name": "uiux-storybook-architect",
+  "version": "1.1.0",
+  "description": "Interview-first UI/UX design skill + 21 slash commands for Claude Code, Codex, Antigravity, Cursor, Windsurf and VS Code Copilot. Turns a vague brief into a buildable Design Storybook: tokens, typography, color, dark mode, component specs, page blueprints, a full motion spec (GSAP, Framer Motion, Three.js) and an accessibility gate.",
+  "type": "module",
+  "bin": {
+    "uiux-storybook-architect": "bin/cli.js",
+    "uiux": "bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node bin/cli.js",
+    "test": "node --test",
+    "check": "npm test && npm pack --dry-run",
+    "prepack": "npm test"
+  },
+  "keywords": [
+    "ui",
+    "ux",
+    "design-system",
+    "design-tokens",
+    "claude-code",
+    "codex",
+    "antigravity",
+    "cursor",
+    "windsurf",
+    "copilot",
+    "agent-skill",
+    "skill",
+    "slash-commands",
+    "gsap",
+    "framer-motion",
+    "threejs",
+    "accessibility",
+    "wcag",
+    "dark-mode",
+    "tailwind"
+  ],
+  "license": "MIT",
+  "author": "Muhammad Nouman",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nomiwsd/ui-ux-design-skill.git"
+  },
+  "homepage": "https://github.com/nomiwsd/ui-ux-design-skill#readme",
+  "bugs": {
+    "url": "https://github.com/nomiwsd/ui-ux-design-skill/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "npm@11.17.0"
+}

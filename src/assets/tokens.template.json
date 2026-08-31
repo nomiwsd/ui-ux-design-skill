@@ -1,0 +1,64 @@
+{
+  "$schema": "https://design-tokens.org/schema.json",
+  "color": {
+    "light": {
+      "bg-canvas": "#F8FAFC",
+      "bg-surface": "#FFFFFF",
+      "bg-raised": "#FFFFFF",
+      "text-primary": "#0F172A",
+      "text-secondary": "#475569",
+      "text-muted": "#64748B",
+      "border-subtle": "#E2E8F0",
+      "border-strong": "#CBD5E1",
+      "accent": "#4F46E5",
+      "accent-hover": "#4338CA",
+      "accent-fg": "#FFFFFF",
+      "success": "#15803D",
+      "warning": "#B45309",
+      "danger": "#B91C1C",
+      "info": "#1D4ED8"
+    },
+    "dark": {
+      "bg-canvas": "#121212",
+      "bg-surface": "#1E1E1E",
+      "bg-raised": "#242424",
+      "text-primary": "#E8E8E8",
+      "text-secondary": "#A9A9A9",
+      "text-muted": "#8A8A8A",
+      "border-subtle": "#2E2E2E",
+      "border-strong": "#3D3D3D",
+      "accent": "#8B85F0",
+      "accent-hover": "#A29CF5",
+      "accent-fg": "#14131F",
+      "success": "#4ADE80",
+      "warning": "#FBBF24",
+      "danger": "#F87171",
+      "info": "#60A5FA"
+    }
+  },
+  "font": {
+    "display": "Fraunces, Georgia, serif",
+    "sans": "Inter, system-ui, sans-serif",
+    "mono": "JetBrains Mono, ui-monospace, monospace"
+  },
+  "fontSize": {
+    "display": "clamp(2.5rem, 1.4rem + 4.6vw, 4.75rem)",
+    "h1": "clamp(2rem, 1.3rem + 2.8vw, 3.5rem)",
+    "h2": "clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem)",
+    "h3": "clamp(1.3rem, 1.1rem + 0.8vw, 1.75rem)",
+    "lg": "1.125rem",
+    "base": "1rem",
+    "sm": "0.875rem",
+    "xs": "0.8125rem"
+  },
+  "space": { "1": "4px", "2": "8px", "3": "12px", "4": "16px", "6": "24px", "8": "32px", "12": "48px", "16": "64px", "24": "96px", "32": "128px" },
+  "radius": { "sm": "6px", "md": "12px", "lg": "24px", "full": "999px" },
+  "duration": { "instant": "80ms", "fast": "150ms", "base": "250ms", "slow": "400ms", "slower": "600ms" },
+  "easing": {
+    "out": "cubic-bezier(0.22, 1, 0.36, 1)",
+    "in": "cubic-bezier(0.55, 0, 1, 0.45)",
+    "inOut": "cubic-bezier(0.65, 0, 0.35, 1)",
+    "emphasis": "cubic-bezier(0.34, 1.56, 0.64, 1)"
+  },
+  "stagger": "60ms"
+}
