@@ -57,6 +57,8 @@ The `Publish` workflow then:
 
 Monitor the run under the repository's **Actions** tab. A failed test or a mismatched tag stops the release before publication.
 
+If that exact package version was published manually first, the workflow detects it, skips the duplicate npm upload, and still creates the matching GitHub release.
+
 ## Manual npm publish
 
 Use this only when the release workflow is unavailable:
