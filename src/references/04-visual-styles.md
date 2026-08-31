@@ -1,12 +1,16 @@
 # Visual Style Direction
 
+**Path:** `src/references/04-visual-styles.md`
+
 A style is a skin over the foundations (hierarchy, contrast, spacing) — never a substitute for them. Choose it *after* the audience and product type are known.
 
 ## The selection question
 
 **What does this audience need to feel in order to trust this product?** A frosted-glass hero is a great first impression for a consumer lifestyle app; the same choice on a hospital patient portal is a liability, because every second of confusion has a real cost.
 
-Default to flat/material unless there is a specific, audience-justified reason to reach for an accent style.
+**On "default to flat".** Flat/material is the correct *structural* baseline for most products — it is legible, accessible, and doesn't fight the content. But "flat" is a statement about ornamentation, not a complete visual direction, and treating it as one is how every project ends up looking the same. A flat design still has to decide: warm or cool neutrals, sharp or soft corners, hairline rules or elevated cards, editorial-generous or utilitarian-dense, which face carries personality, and what the signature element is. Those decisions are the design. Reaching for flat is not an excuse to skip them.
+
+The distinctive work in most projects comes from composition, type, and palette (see `15-composition.md`) rather than from an accent style. A flat, restrained page with a real type pairing, a considered warm palette, and one grid break looks more expensive than the same page with glassmorphism bolted on.
 
 ## Flat / material
 The safe, accessible baseline for most products. Clean surfaces, minimal ornamentation, elevation via subtle shadow or surface color. Still correct for most SaaS, e-commerce, and business apps.

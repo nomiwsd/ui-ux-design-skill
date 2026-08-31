@@ -121,4 +121,4 @@ Finally verify:
 - the GitHub repository is public;
 - CI and Publish workflows are green;
 - the GitHub release tag matches npm; and
-- the release smoke-test directory contains the skill and all 21 commands.
+- the release smoke-test directory contains the skill and all 8 commands.

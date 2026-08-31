@@ -1,4 +1,4 @@
 interface:
   display_name: "UI/UX Storybook Architect"
-  short_description: "Turn product briefs into buildable design systems"
-  default_prompt: "Use $uiux-storybook-architect to design this product and create its Design Storybook."
+  short_description: "Turn product briefs into distinctive, buildable design systems"
+  default_prompt: "Use $uiux-storybook-architect to design this product: run discovery, give me three art directions to choose from, then write the Design Storybook."

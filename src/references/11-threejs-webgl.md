@@ -1,5 +1,7 @@
 # Three.js / WebGL — when it earns its place
 
+**Path:** `src/references/11-threejs-webgl.md`
+
 3D is the single most expensive decision on this list. It can also be the one thing that makes a site memorable. The rule: **3D must answer a question that 2D cannot** — showing a physical product, demonstrating spatial data, or being the actual brand statement on a portfolio.
 
 Do not use 3D for: a decorative blob behind a SaaS hero, anything a video or animated SVG would do at 5% of the cost, or anything sitting behind the LCP element.

@@ -1,5 +1,12 @@
 # Typography, Color, and Theming
 
+**Path:** `src/references/03-typography-color-theming.md`
+
+> **Every hex value, font name, and ramp in this file is illustrative.** They exist to show
+> structure and relationships, not to be shipped. The Slate-derived ramp and the indigo accent
+> below are the most-copied values on the web and are on the ban list in `00-anti-slop.md`.
+> Use the *method* here; generate the values for the actual brand.
+
 ## Typography
 
 ### Pairing rules
@@ -79,6 +86,10 @@ The most common palette failure is an accent used at 40%, which makes the actual
 ### Building the neutral ramp
 Neutrals are never pure gray in good design. Tint them toward the brand hue — a blue-brand product uses grays with a few points of blue. It is invisible individually and unmistakable across a whole interface.
 
+Warm-tinted neutrals (a few points toward orange/yellow) read as paper, editorial, and human; cool-tinted read as technical and clinical. Choosing the tint direction is a real design decision, and it is one of the cheapest ways to stop a palette looking like every other one.
+
+The ramp below shows the **step structure and the role of each step** — it is the Tailwind Slate ramp, it is on the ban list, and it should not be shipped. Generate the equivalent nine steps in the actual brand hue.
+
 ```
 50   #F8FAFC   page background (light)
 100  #F1F5F9   subtle surface
@@ -105,7 +116,7 @@ Neutrals are never pure gray in good design. Tint them toward the brand hue — 
 Cultural meaning varies — check the target market before leaning on a single association.
 
 ### Accessibility floor
-4.5:1 for normal text, 3:1 for large text (18pt+/14pt bold) and for UI component boundaries — WCAG AA. Run every pairing through a checker (WebAIM, Stark, or the Figma/DevTools contrast tools) and record the numbers in `design/03-typography-and-color.md`. "Looks fine to me" is not a measurement.
+4.5:1 for normal text, 3:1 for large text (18pt+/14pt bold) and for UI component boundaries — WCAG AA. Run every pairing through a checker (WebAIM, Stark, or the Figma/DevTools contrast tools) and record the numbers in `design/04-typography-and-color.md`. "Looks fine to me" is not a measurement.
 
 Note that APCA (the algorithm coming with WCAG 3) treats dark themes more accurately than the current ratio math; if a dark palette passes AA but still feels harsh, trust your eye and soften it.
 
@@ -124,6 +135,8 @@ Note that APCA (the algorithm coming with WCAG 3) treats dark themes more accura
 - **Images and illustrations need attention too** — a white-background PNG in a dark UI is a glaring rectangle. Provide dark variants or apply a subtle scrim.
 
 ### Token structure (build this from day one; retrofitting dark mode is where most accessibility failures happen)
+
+**Copy the structure and the role names below, not the values.** The indigo accent in this example is the single most reproduced accent color in generated web design.
 
 ```css
 :root {

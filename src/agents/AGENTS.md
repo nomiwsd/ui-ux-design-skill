@@ -1,7 +1,5 @@
 # Agent instructions — UI/UX work
 
-**Path:** `src/AGENTS.md`
-
 Any request to design, redesign, critique, or build a website, app, landing page, dashboard,
 color palette, type system, dark mode, or animation is UI/UX work. For all of it:
 

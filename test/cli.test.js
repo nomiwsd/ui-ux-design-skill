@@ -10,6 +10,17 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const cli = path.join(root, "bin", "cli.js");
 const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 
+function countFiles(directory) {
+  return fs.readdirSync(directory, { withFileTypes: true }).reduce(
+    (count, entry) =>
+      count +
+      (entry.isDirectory()
+        ? countFiles(path.join(directory, entry.name))
+        : 1),
+    0,
+  );
+}
+
 function run(args, options = {}) {
   return execFileSync(process.execPath, [cli, ...args], {
     cwd: root,
@@ -29,7 +40,7 @@ test("list exposes every bundled UX command", () => {
     .readdirSync(path.join(root, "src", "commands"))
     .filter((file) => file.endsWith(".md"));
 
-  assert.equal(commands.length, 21);
+  assert.equal(commands.length, 8);
   for (const command of commands) {
     assert.match(output, new RegExp(`/${path.basename(command, ".md")}\\b`));
   }
@@ -53,13 +64,19 @@ test("project installation is complete, additive, and safe to repeat", () => {
     const rules = fs.readFileSync(memory, "utf8");
 
     assert.ok(fs.existsSync(path.join(skill, "SKILL.md")));
+    assert.ok(fs.existsSync(path.join(skill, "AGENTS.md")));
     assert.ok(fs.existsSync(path.join(skill, "agents", "openai.yaml")));
-    assert.equal(fs.readdirSync(path.join(skill, "references")).length, 14);
-    assert.equal(fs.readdirSync(path.join(skill, "docs")).length, 12);
+    assert.equal(countFiles(path.join(skill, "references")), 26);
+    assert.equal(countFiles(path.join(skill, "docs")), 3);
+    assert.ok(fs.existsSync(path.join(skill, "references", "00-anti-slop.md")));
+    assert.ok(
+      fs.existsSync(path.join(skill, "references", "blueprints", "saas.md")),
+    );
     assert.equal(
       fs.readdirSync(commands).filter((file) => file.startsWith("ux-")).length,
-      21,
+      8,
     );
+    assert.ok(!fs.existsSync(path.join(commands, "ux-3d.md")));
     assert.match(rules, /^# Existing project rules/m);
     assert.equal(rules.match(/uiux-storybook-architect/g)?.length, 1);
   } finally {

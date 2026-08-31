@@ -1,5 +1,7 @@
 # Craft-Level Details and Accessibility
 
+**Path:** `src/references/07-craft-and-accessibility.md`
+
 ## Navigation
 - **Top nav**: best for 5–7 primary sections; one- or two-word labels; the highest-value action styled as a button, not a plain link.
 - **Sidebar**: standard for SaaS and dashboards with deep content; collapsible on smaller screens; obvious active state.

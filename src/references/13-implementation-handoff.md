@@ -1,5 +1,7 @@
 # Implementation Handoff
 
+**Path:** `src/references/13-implementation-handoff.md`
+
 ## Tokens first, always
 
 Nothing else gets built until the tokens exist in code. Every subsequent component references tokens; no component contains a raw hex value, a raw pixel spacing outside the scale, or a raw duration.
@@ -42,7 +44,7 @@ For Tailwind v3, map the same variables in `theme.extend` (`colors: { accent: "v
 
 Primitives → compositions → sections → pages. Building page-by-page is what produces nine slightly different buttons.
 
-For each component, implement every state from `04-components.md` in the same commit as the component. States added later are states that get forgotten.
+For each component, implement every state from `05-components.md` in the same commit as the component. States added later are states that get forgotten.
 
 ## Fonts
 
@@ -74,9 +76,9 @@ Give every component a story per variant and per state, add the a11y addon (it r
 
 ## Definition of done
 
-- [ ] Every token in code matches `02-design-tokens.md` exactly
+- [ ] Every token in code matches `03-design-tokens.md` exactly
 - [ ] No hardcoded colors, spacings, durations outside the token files
-- [ ] Every component state from `04-components.md` implemented and visually verified
+- [ ] Every component state from `05-components.md` implemented and visually verified
 - [ ] Both themes verified on every page, including images and third-party embeds
 - [ ] Keyboard-only pass through each primary flow
 - [ ] Screen-reader pass on the primary flow
@@ -90,4 +92,4 @@ Give every component a story per variant and per state, add the a11y addon (it r
 
 The `design/` folder is written so a fresh agent session can build from it cold. When starting a build in a new session or a different IDE, point at it explicitly:
 
-> Read `design/00-brief.md` through `design/08-build-plan.md`, then implement in the order given in the build plan. Use only tokens from `design/tokens/tokens.css`. Do not invent colors, spacing, or animations that are not in the spec — if something is missing, ask before improvising.
+> Read `design/00-brief.md` through `design/09-build-plan.md`, then implement in the order given in the build plan. Use only tokens from `design/tokens/tokens.css`. Follow the chosen direction in `design/01-art-direction.md` exactly, including the section rhythm and the signature element. Do not invent colors, spacing, copy, or animations that are not in the spec — if something is missing, ask before improvising.

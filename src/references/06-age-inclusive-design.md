@@ -1,5 +1,7 @@
 # Age-Inclusive Design
 
+**Path:** `src/references/06-age-inclusive-design.md`
+
 A 6-year-old, a 17-year-old, a 35-year-old, and a 75-year-old are not the same interface with different content. Motor skills, reading ability, patience, and trust signals genuinely differ. Treat the audience's age range as a first-class input from discovery.
 
 ## Children (3–12), split by developmental stage

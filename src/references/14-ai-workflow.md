@@ -1,5 +1,7 @@
 # AI-Integrated Design Workflow
 
+**Path:** `src/references/14-ai-workflow.md`
+
 AI changed the workflow, not the goal. The goal is still a product a specific human can use easily and trusts.
 
 ## Where AI genuinely helps

@@ -1,5 +1,7 @@
 # GSAP Recipes (ScrollTrigger, SplitText, Flip, Lenis)
 
+**Path:** `src/references/09-gsap-recipes.md`
+
 GSAP and its plugins — ScrollTrigger, SplitText, ScrollSmoother, Flip, DrawSVG, MorphSVG — are free for commercial use since the Webflow acquisition (2025). Install `gsap` and, for React, `@gsap/react`.
 
 ```bash

@@ -1,5 +1,7 @@
 # Foundations — research, IA, and design theory
 
+**Path:** `src/references/02-foundations.md`
+
 ## Phase 0 recap — turning research into design inputs
 
 Three artifacts come out of discovery and feed everything downstream:

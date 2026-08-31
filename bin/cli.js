@@ -149,6 +149,7 @@ function installSkill(parent) {
   fs.rmSync(dest, { recursive: true, force: true });
   fs.mkdirSync(dest, { recursive: true });
   fs.copyFileSync(path.join(SRC, "SKILL.md"), path.join(dest, "SKILL.md"));
+  fs.copyFileSync(path.join(SRC, "AGENTS.md"), path.join(dest, "AGENTS.md"));
   copyDir(path.join(SRC, "agents"), path.join(dest, "agents"));
   copyDir(path.join(SRC, "references"), path.join(dest, "references"));
   copyDir(path.join(SRC, "assets"), path.join(dest, "assets"));
@@ -208,7 +209,7 @@ function ask(q) {
 function banner() {
   log();
   log(`  ${c.b("UI/UX Storybook Architect")} ${c.dim("v" + VERSION)}`);
-  log(`  ${c.dim("Interview-first design skill + 21 slash commands for every agentic IDE")}`);
+  log(`  ${c.dim("Distinctive UI/UX direction + 8 workflow commands for every agentic IDE")}`);
   log();
 }
 
@@ -306,13 +307,10 @@ function cmdList() {
   banner();
   const dir = path.join(SRC, "commands");
   const groups = {
-    "Research & structure": ["ux-discover", "ux-brief", "ux-ia"],
-    Deliverable: ["ux-storybook"],
-    Foundations: ["ux-tokens", "ux-type", "ux-color", "ux-theme", "ux-style"],
-    Specifications: ["ux-components", "ux-pages"],
-    "Motion & 3D": ["ux-motion", "ux-gsap", "ux-framer", "ux-3d"],
-    Audits: ["ux-critique", "ux-a11y", "ux-perf", "ux-responsive"],
-    Implementation: ["ux-build", "ux-handoff"],
+    "Discovery & direction": ["ux-discover", "ux-direction"],
+    "Specification & copy": ["ux-spec", "ux-copy"],
+    "Motion & implementation": ["ux-motion", "ux-build"],
+    Review: ["ux-audit", "ux-critique"],
   };
   const desc = (n) => {
     const f = path.join(dir, n + ".md");
@@ -325,7 +323,7 @@ function cmdList() {
     for (const n of cmds) log(`   ${c.cy("/" + n).padEnd(tty ? 26 : 16)} ${c.dim(desc(n))}`);
     log();
   }
-  log(`  ${c.dim("Normal path:")} /ux-discover → /ux-storybook → /ux-build → /ux-a11y → /ux-handoff`);
+  log(`  ${c.dim("Normal path:")} /ux-discover → /ux-direction → /ux-spec → /ux-copy → /ux-motion → /ux-build → /ux-audit`);
   log();
 }
 
@@ -414,7 +412,7 @@ function help() {
   log();
   log(`  ${c.b("Commands")}`);
   log(`    init          install the skill + slash commands (interactive)`);
-  log(`    list          show all 21 slash commands`);
+  log(`    list          show all 8 slash commands`);
   log(`    doctor        check what is installed and whether the gate is intact`);
   log(`    eject         copy the source out so you can customize it`);
   log(`    uninstall     remove skill and ux-* commands`);

@@ -1,71 +1,123 @@
 # Product-Type Patterns
 
-Each category has earned conventions. Users arrive carrying expectations; violating them without a strong reason adds friction, not delight.
+**Path:** `src/references/05-website-type-patterns.md`
+
+This file covers the *principles* per category. For the full page inventory, per-page detail, and acceptance criteria of a category, use `references/blueprints/<type>.md`. For the anatomy of any individual section, use `references/17-section-library.md`.
+
+Each category has earned conventions. Users arrive carrying expectations, and violating them without reason adds friction rather than delight.
+
+**Read this correctly.** What follows is a list of the *jobs a page in this category must do* and the *conventions worth keeping*. It is deliberately not a section order to output. Reproducing a canonical section sequence is the primary cause of generic output — the sequence below exists in every AI-generated site precisely because it is written down in every design reference.
+
+## How to use a convention without producing a template
+
+For each category, separate three things:
+
+1. **Non-negotiable jobs** — what a visitor must be able to do. These are fixed.
+2. **Conventions worth keeping** — patterns where deviating costs more than it gains.
+3. **Open territory** — where the design should differ from the category average.
+
+Then decide the section *sequence* from the persona's decision path, not from a list. Ask: what does this specific person need to believe, in what order, before they act? That order is the page. Two products in the same category with different buyers should produce different pages.
+
+---
 
 ## SaaS / product
 
-**Marketing site section order**
-1. Nav — logo, 4–6 links, one visually distinct CTA button
-2. Hero — headline ≤12 words stating the *outcome*, one-line subhead, primary CTA + secondary, and a real product screenshot or interactive demo (illustration-heavy heroes read as dated)
-3. Social proof bar — customer logos, immediately below the fold
-4. 3–4 benefit sections, each tied to an actual persona task, alternating layout, each with a visual
-5. How it works — 3 steps, numbered
-6. Testimonials / case studies with real names, roles, photos
-7. Pricing — visible on the site itself; gated "request a demo" flows measurably hurt small and mid-market conversion
-8. FAQ — the real objections, answered plainly
-9. Final CTA + footer
+**Non-negotiable jobs**: state what it does within the first screen; show the product itself; make pricing findable; give one obvious way to start.
+
+**Conventions worth keeping**
+- Nav with 4–6 links and one visually distinct CTA
+- A headline that states the outcome in ≤12 words, not the category
+- Real product UI shown at real fidelity — screenshots, an interactive demo, actual output. Illustration-led heroes read as dated and as having nothing to show.
+- Pricing on the site. Gated "request a demo" measurably hurts small and mid-market conversion.
+- Objections answered plainly somewhere on the page
+
+**Open territory**: the order and shape of everything else. Evidence can lead instead of features. The pricing table can *be* the hero for a product whose pricing is the differentiator. A product with one killer capability doesn't need three benefit sections. A tool for engineers can open with a code block and no marketing copy at all.
+
+**Deliberately avoid**: the logo bar directly under the hero followed by three equal icon cards. It is the single most reproduced sequence on the web.
 
 **In-app**
-- Sidebar navigation with an obvious active state (background fill or accent border — not just bold text)
-- Strong data hierarchy: one primary metric per view, secondary metrics subordinate
-- Onboarding as a checklist plus contextual tooltips, not a long tutorial
+- Sidebar nav with an obvious active state — background fill or accent border, not just bold text
+- One primary metric per view; secondary metrics visibly subordinate
+- Onboarding as a checklist plus contextual tooltips, not a tutorial
 - Designed empty states for every list and table
-- Bulk actions, keyboard shortcuts, and a command palette (`Cmd+K`) for power users
+- Bulk actions, keyboard shortcuts, command palette (`Cmd+K`)
 - Settings organized by task, not by database table
-
-**Style**: flat/material default; glass accents acceptable on consumer-leaning products; never on data-dense screens.
 
 ## E-commerce
 
-**Flow**: category or search → filterable grid → product detail → cart → checkout.
+**Non-negotiable jobs**: find a product; judge it; understand cost and delivery; buy without friction.
 
-- **Grid**: image-dominant cards, price and rating visible without hover, wishlist affordance, fast filters that don't reload the page.
-- **Product detail**: image gallery first with zoom, price and add-to-cart above the fold on mobile, variant selection that never leaves the user guessing what's out of stock, delivery estimate near the buy button, reviews below.
-- **Cart**: editable inline, total costs shown including shipping, one clear continue action.
-- **Checkout**: the highest-stakes screen in the product. Guest checkout available, minimum fields, progress shown, address autocomplete, no surprise costs revealed late, error recovery that never wipes entered data.
-- **Trust signals** (reviews, returns policy, secure-payment marks) belong *at the decision point*, not only in the footer.
-- Photography quality outranks nearly every other design decision here.
+**Conventions worth keeping**
+- Image-dominant grid cards; price and rating visible without hover; fast filters that don't reload
+- Product detail: gallery first with zoom, price and add-to-cart above the fold on mobile, variant state never ambiguous, delivery estimate near the buy button
+- Cart editable inline with full costs including shipping
+- Checkout: guest option, minimum fields, progress shown, address autocomplete, no late surprise costs, errors that never wipe entered data
+- Trust signals at the decision point, not only the footer
+
+**Open territory**: the category and editorial layer above the grid. This is where every store looks identical and where brand actually lives.
+
+Photography quality outranks nearly every other design decision here.
 
 ## Corporate / institutional
 
-Credibility over cleverness. Consistent typographic system, verified testimonials and case studies placed near decision points, clean IA that signals organizational competence, obvious contact routes, accessible PDF/document handling, and conservative color and motion. Heavy trend styles are usually the wrong call.
+**Non-negotiable jobs**: establish credibility; make the organization's structure legible; provide obvious contact routes.
+
+**Conventions worth keeping**: consistent typographic system, verified case studies near decision points, shallow IA, accessible document handling, conservative motion.
+
+**Open territory**: typography and editorial layout. Institutional does not mean visually mute — a strict Swiss grid with real type discipline reads far more credible than another stock-photo-and-blue-gradient corporate page. Restraint is the license here, not blandness.
 
 ## Portfolio / creative agency
 
-The site is itself a work sample, so there is more licence for motion, bold type, and unconventional layout. Still: the path to contact must be obvious and never buried under art direction. Case studies should show process and outcome, not just a hero image. Load fast anyway — a slow portfolio reads as an inability to ship.
+The site is itself a work sample, so there is real licence for motion, bold type, and unconventional layout — and a correspondingly higher bar. A templated portfolio is worse than a plain one.
+
+**Non-negotiable jobs**: show the work; show the thinking behind it; make contact trivially findable.
+
+Case studies show process and outcome, not just a hero image. Load fast regardless — a slow portfolio reads as an inability to ship.
 
 ## Content / media / blog
 
 Typography *is* the product.
+
 - 680–760px measure, 18–20px body, 1.6–1.75 line-height, generous paragraph spacing
-- Minimal chrome; ads and newsletter prompts must never compete with the reading hierarchy
+- Minimal chrome; ads and newsletter prompts never compete with the reading hierarchy
 - Reading time, publish date, and author near the title
-- Sticky progress indicator is welcome; sticky share bars that eat the measure are not
-- Strong support for pull quotes, figures with captions, code blocks, and footnotes
+- Sticky progress is welcome; sticky share bars that eat the measure are not
+- Real support for pull quotes, figures with captions, code blocks, footnotes
+
+**Open territory**: the index and article furniture. Margin notes, a numbered spine, drop caps, and asymmetric figure placement are all cheap and immediately distinguish an editorial site from a blog template.
 
 ## Dashboards and data-heavy apps
 
-- One screen, one question answered. If a dashboard needs a legend to be understood, restructure it.
-- Tables over cards once there are more than ~8 items; cards over tables when the visual is the content.
-- Number formatting: tabular numerals, consistent decimal places, units labelled once.
-- Filters persist in the URL so views are shareable.
-- Charts: no more than 6 series, direct labels over legends where possible, never color alone to distinguish series.
+- One screen answers one question. If it needs a legend to be understood, restructure it.
+- Tables past ~8 items; cards when the visual is the content
+- Tabular numerals, consistent decimals, units labelled once
+- Filters persist in the URL so views are shareable
+- Charts: ≤6 series, direct labels over legends, never color alone
+
+**Open territory**: density and type. This is the category where utilitarian-dense composition (see `15-composition.md`) is not just acceptable but correct, and where most generated work wrongly applies marketing-site spacing.
 
 ## Mobile-native and mobile web
 
-- Design for thumb reach: primary actions in the lower half of the screen.
-- Follow platform conventions (iOS HIG / Android Material) unless there's a strong reason to diverge; users bring muscle memory with them.
-- Touch targets ≥44×44px with more generous spacing than desktop.
-- Bottom tab bar: 3–5 destinations, icon + label together (icon-only measurably hurts findability).
-- Respect safe areas (`env(safe-area-inset-bottom)`) and account for browser chrome with `dvh` rather than `vh`.
-- Assume interruption: preserve state when the user returns.
+- Thumb reach: primary actions in the lower half of the screen
+- Follow platform conventions (iOS HIG / Material) unless there's a strong reason to diverge
+- Touch targets ≥44×44px with more generous spacing than desktop
+- Bottom tab bar: 3–5 destinations, icon **and** label — icon-only measurably hurts findability
+- Respect safe areas (`env(safe-area-inset-bottom)`); use `dvh`, not `vh`
+- Assume interruption: preserve state on return
+
+---
+
+## Deriving the section sequence
+
+Before writing any page blueprint, write the decision path for the primary persona as a short list of beliefs:
+
+```
+Maya needs to believe, in this order:
+1. This handles exceptions specifically, not "operations" generally   → hero must name exceptions
+2. It works with the systems she already has                          → integrations before features
+3. Someone like her already trusts it                                 → evidence with her job title on it
+4. She can try it without a sales call                                → pricing + self-serve start
+5. It won't create work for her team                                  → migration/effort answered
+```
+
+That list is the page. It produces a different order for a different persona in the same category — which is exactly the point.

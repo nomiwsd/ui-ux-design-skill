@@ -1,5 +1,7 @@
 # Motion (Framer Motion) Recipes
 
+**Path:** `src/references/10-motion-react-recipes.md`
+
 Framer Motion is now published as **Motion** (`npm i motion`, imported from `motion/react`). The older `framer-motion` package still works and the API is the same; use whichever the project already has.
 
 ```bash

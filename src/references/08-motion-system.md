@@ -1,5 +1,7 @@
 # Motion System — the spec that makes animation look designed rather than added
 
+**Path:** `src/references/08-motion-system.md`
+
 Premium motion is **fast, consistent, and purposeful**. Amateur motion is slow, decorative, and inconsistent. The difference is a system, not a library.
 
 ## Four rules
