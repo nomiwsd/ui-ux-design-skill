@@ -33,7 +33,7 @@ const ok = (s) => log(`  ${c.g("✓")} ${s}`);
 const warn = (s) => log(`  ${c.y("!")} ${s}`);
 
 /* ------------------------------------------------------------ targets ---- */
-const HOME = os.homedir();
+const HOME = process.env.UIUX_TEST_HOME || os.homedir();
 
 /**
  * Each target describes where the skill and the commands go, for both scopes.
@@ -74,7 +74,7 @@ const TARGETS = {
     verify: "/skills  → uiux-storybook-architect should be listed",
   },
   antigravity: {
-    label: "Google Antigravity",
+    label: "Google Antigravity IDE",
     detect: (d) =>
       exists(path.join(HOME, ".gemini/antigravity")) ||
       exists(path.join(d, ".agents/workflows")) ||
@@ -86,9 +86,9 @@ const TARGETS = {
       memory: path.join(d, "AGENTS.md"),
     }),
     global: () => ({
-      skill: path.join(HOME, ".gemini/antigravity/skills"),
-      cmds: path.join(HOME, ".gemini/antigravity/global_workflows"),
-      ref: path.join(HOME, ".gemini/antigravity/skills", NAME),
+      skill: path.join(HOME, ".gemini/config/skills"),
+      cmds: path.join(HOME, ".gemini/config/global_workflows"),
+      ref: path.join(HOME, ".gemini/config/skills", NAME),
     }),
     verify: "type / in the agent panel → ux-* workflows appear",
   },
@@ -103,8 +103,11 @@ const TARGETS = {
       ruleFrontmatter:
         "---\ndescription: UI/UX design workflow — interview first, storybook before code\nglobs: [\"**/*.tsx\",\"**/*.jsx\",\"**/*.vue\",\"**/*.css\",\"design/**\"]\nalwaysApply: false\n---\n",
     }),
-    global: null,
-    verify: "type / in chat → ux-* commands appear",
+    global: () => ({
+      skill: path.join(HOME, ".cursor/skills"),
+      ref: path.join(HOME, ".cursor/skills", NAME),
+    }),
+    verify: "type /uiux-storybook-architect or check Customize → Skills",
   },
   windsurf: {
     label: "Windsurf",
@@ -115,8 +118,11 @@ const TARGETS = {
       ref: `.agents/skills/${NAME}`,
       rule: path.join(d, ".windsurf/rules/uiux.md"),
     }),
-    global: null,
-    verify: "type / in Cascade → ux-* workflows appear",
+    global: () => ({
+      skill: path.join(HOME, ".codeium/windsurf/skills"),
+      ref: path.join(HOME, ".codeium/windsurf/skills", NAME),
+    }),
+    verify: "type @uiux-storybook-architect in Cascade",
   },
   copilot: {
     label: "VS Code / GitHub Copilot",
@@ -128,8 +134,11 @@ const TARGETS = {
       ref: `.agents/skills/${NAME}`,
       rule: path.join(d, ".github/copilot-instructions.md"),
     }),
-    global: null,
-    verify: "Agent mode → type / → ux-* prompts appear",
+    global: () => ({
+      skill: path.join(HOME, ".copilot/skills"),
+      ref: path.join(HOME, ".copilot/skills", NAME),
+    }),
+    verify: "Agent mode → invoke /uiux-storybook-architect or ask a UI/UX task",
   },
 };
 
@@ -155,6 +164,18 @@ function installSkill(parent) {
   copyDir(path.join(SRC, "assets"), path.join(dest, "assets"));
   copyDir(path.join(SRC, "docs"), path.join(dest, "docs"));
   return dest;
+}
+function inspectSkill(file) {
+  const body = fs.readFileSync(file, "utf8");
+  const frontmatter = body.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+  const name = frontmatter?.[1].match(/^name:\s*(.+)$/m)?.[1].trim() || "";
+  const description = frontmatter?.[1].match(/^description:\s*(.+)$/m)?.[1].trim() || "";
+  const errors = [];
+  if (!frontmatter) errors.push("missing YAML frontmatter");
+  if (!/^[a-z0-9-]{1,64}$/.test(name)) errors.push("name must be 1-64 lowercase letters, digits, or hyphens");
+  if (!description) errors.push("description is required");
+  if (description.length > 1024) errors.push(`description is ${description.length} characters (maximum 1024)`);
+  return { body, errors };
 }
 function installCommands(dir, skillRef, suffix = ".md") {
   fs.mkdirSync(dir, { recursive: true });
@@ -222,6 +243,13 @@ async function cmdInit(args) {
 
   banner();
 
+  const sourceCheck = inspectSkill(path.join(SRC, "SKILL.md"));
+  if (sourceCheck.errors.length) {
+    sourceCheck.errors.forEach((error) => warn(`invalid SKILL.md — ${error}`));
+    process.exitCode = 1;
+    return;
+  }
+
   let chosen;
   if (args.flags.ide) {
     chosen = String(args.flags.ide).split(",").map((s) => s.trim()).filter(Boolean);
@@ -276,8 +304,12 @@ async function cmdInit(args) {
     log(`  ${c.cy(t.label)}`);
     const skillDir = installSkill(plan.skill);
     ok(`skill    ${c.dim(path.relative(dest, skillDir) || skillDir)}`);
-    const n = installCommands(plan.cmds, plan.ref, plan.suffix || ".md");
-    ok(`commands ${c.dim(path.relative(dest, plan.cmds) || plan.cmds)} ${c.dim(`(${n})`)}`);
+    if (plan.cmds) {
+      const n = installCommands(plan.cmds, plan.ref, plan.suffix || ".md");
+      ok(`commands ${c.dim(path.relative(dest, plan.cmds) || plan.cmds)} ${c.dim(`(${n})`)}`);
+    } else {
+      log(`    ${c.dim("The skill itself is available for automatic or manual invocation.")}`);
+    }
     if (plan.note) log(`    ${c.dim(plan.note)}`);
     const rulesFile = plan.rule || plan.memory;
     if (rulesFile && scope === "project") {
@@ -340,18 +372,24 @@ function cmdDoctor(args) {
       if (!plan) continue;
       const skillPath = path.join(plan.skill, NAME, "SKILL.md");
       if (!exists(skillPath)) continue;
-      const cmdCount = exists(plan.cmds)
+      const cmdCount = plan.cmds && exists(plan.cmds)
         ? fs.readdirSync(plan.cmds).filter((f) => f.startsWith("ux-")).length
         : 0;
       // several IDEs share .agents/skills — without commands this target isn't really installed
-      if (cmdCount === 0 && plan.skill.includes(path.join(".agents", "skills"))) continue;
+      if (plan.cmds && cmdCount === 0 && plan.skill.includes(path.join(".agents", "skills"))) continue;
       found++;
-      const gated = fs.readFileSync(skillPath, "utf8").includes("When to interview");
+      const skillCheck = inspectSkill(skillPath);
+      const gated = skillCheck.body.includes("When to interview");
       log(`  ${c.cy(t.label)} ${c.dim("(" + scope + ")")}`);
       ok(`skill    ${c.dim(path.join(plan.skill, NAME))}`);
-      cmdCount
+      plan.cmds && cmdCount
         ? ok(`commands ${cmdCount} installed ${c.dim(plan.cmds)}`)
-        : warn(`no commands found in ${plan.cmds}`);
+        : plan.cmds
+          ? warn(`no commands found in ${plan.cmds}`)
+          : ok("skill invocation available (no separate global command directory)");
+      skillCheck.errors.length
+        ? skillCheck.errors.forEach((error) => warn(`invalid SKILL.md — ${error}`))
+        : ok("skill metadata valid");
       gated ? ok("interview logic present (new projects only)") : warn("interview logic MISSING — reinstall");
       log();
     }
@@ -377,7 +415,7 @@ function cmdUninstall(args) {
       const plan = scope === "global" ? t.global?.() : t.project(dest);
       if (!plan) continue;
       if (removeIfOurs(path.join(plan.skill, NAME))) { ok(`removed skill ${c.dim(path.join(plan.skill, NAME))}`); n++; }
-      if (exists(plan.cmds)) {
+      if (plan.cmds && exists(plan.cmds)) {
         for (const f of fs.readdirSync(plan.cmds)) {
           if (/^ux-.*\.md$/.test(f)) { fs.rmSync(path.join(plan.cmds, f)); n++; }
         }

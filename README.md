@@ -255,14 +255,16 @@ The skill inventories existing sections, specifies motion before implementation,
 
 ## Supported tools and install locations
 
-| `--ide` value | Tool | Skill location in a project | Command/workflow location |
+| `--ide` value | Tool | Project skill | Global skill |
 |---|---|---|---|
-| `claude` | Claude Code | `.claude/skills/uiux-storybook-architect/` | `.claude/commands/` |
-| `codex` | OpenAI Codex | `.agents/skills/uiux-storybook-architect/` | `~/.codex/prompts/` |
-| `antigravity` | Google Antigravity | `.agents/skills/uiux-storybook-architect/` | `.agents/workflows/` |
-| `cursor` | Cursor | `.agents/skills/uiux-storybook-architect/` | `.cursor/commands/` |
-| `windsurf` | Windsurf | `.agents/skills/uiux-storybook-architect/` | `.windsurf/workflows/` |
-| `copilot` | VS Code / GitHub Copilot | `.agents/skills/uiux-storybook-architect/` | `.github/prompts/` |
+| `claude` | Claude Code | `.claude/skills/uiux-storybook-architect/` | `~/.claude/skills/uiux-storybook-architect/` |
+| `codex` | OpenAI Codex | `.agents/skills/uiux-storybook-architect/` | `~/.codex/skills/uiux-storybook-architect/` |
+| `antigravity` | Google Antigravity IDE | `.agents/skills/uiux-storybook-architect/` | `~/.gemini/config/skills/uiux-storybook-architect/` |
+| `cursor` | Cursor | `.agents/skills/uiux-storybook-architect/` | `~/.cursor/skills/uiux-storybook-architect/` |
+| `windsurf` | Windsurf | `.agents/skills/uiux-storybook-architect/` | `~/.codeium/windsurf/skills/uiux-storybook-architect/` |
+| `copilot` | VS Code / GitHub Copilot | `.agents/skills/uiux-storybook-architect/` | `~/.copilot/skills/uiux-storybook-architect/` |
+
+Project commands/workflows are installed into each tool's native command directory. Global command files are installed where the tool supports them: `~/.claude/commands/`, `~/.codex/prompts/`, and `~/.gemini/config/global_workflows/`. In Cursor, Windsurf, and Copilot, invoke the globally installed skill itself from the skill picker or let the agent select it automatically.
 
 Project instruction files are updated additively. Existing `AGENTS.md`, `CLAUDE.md`, Cursor rules, Windsurf rules, and Copilot instructions are not replaced.
 
@@ -287,7 +289,7 @@ npx uiux-storybook-architect init \
 npx uiux-storybook-architect init --all --global --yes
 ```
 
-Claude Code, Codex, and Antigravity support global skill locations. Tools without a global target fall back to project scope and report that choice.
+All six supported tools receive the skill in their native global location. No project files are written by a global install.
 
 ### Other package runners
 
@@ -491,9 +493,9 @@ Ask for it directly or use a focused `/ux-spec` scope. Single decisions, small e
 </details>
 
 <details>
-<summary><strong>A global installation wrote project files</strong></summary>
+<summary><strong>Antigravity does not show the skill</strong></summary>
 
-Cursor, Windsurf, and GitHub Copilot do not have a supported global target in this CLI. They fall back to project scope and print a warning.
+Current Antigravity IDE releases discover global skills from `~/.gemini/config/skills/` and global workflows from `~/.gemini/config/global_workflows/`. Versions of this package before this fix used the internal `~/.gemini/antigravity/` data directory, which Antigravity does not index for custom skills. Reinstall globally, then fully restart Antigravity or start a new agent session.
 
 </details>
 

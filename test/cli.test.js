@@ -45,6 +45,15 @@ test("list exposes every bundled UX command", () => {
     assert.match(output, new RegExp(`/${path.basename(command, ".md")}\\b`));
   }
 });
+test("skill metadata stays within the portable Agent Skills limits", () => {
+  const skill = fs.readFileSync(path.join(root, "src", "SKILL.md"), "utf8");
+  const name = skill.match(/^name:\s*(.+)$/m)?.[1].trim();
+  const description = skill.match(/^description:\s*(.+)$/m)?.[1].trim();
+
+  assert.match(name, /^[a-z0-9-]{1,64}$/);
+  assert.ok(description);
+  assert.ok(description.length <= 1024);
+});
 test("project installation is complete, additive, and safe to repeat", () => {
   const destination = fs.mkdtempSync(path.join(os.tmpdir(), "uiux-skill-"));
   const memory = path.join(destination, "CLAUDE.md");
@@ -80,6 +89,41 @@ test("project installation is complete, additive, and safe to repeat", () => {
     assert.match(rules, /^# Existing project rules/m);
     assert.equal(rules.match(/uiux-storybook-architect/g)?.length, 1);
   } finally {
+    fs.rmSync(destination, { recursive: true, force: true });
+  }
+});
+
+test("global installation uses every IDE's current native skill path", () => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), "uiux-home-"));
+  const destination = fs.mkdtempSync(path.join(os.tmpdir(), "uiux-project-"));
+  const env = { ...process.env, NO_COLOR: "1", UIUX_TEST_HOME: home };
+  const skillPaths = [
+    ".claude/skills",
+    ".codex/skills",
+    ".gemini/config/skills",
+    ".cursor/skills",
+    ".codeium/windsurf/skills",
+    ".copilot/skills",
+  ];
+
+  try {
+    run(["init", "--all", "--global", "--dest", destination, "--yes"], { env });
+
+    for (const skillRoot of skillPaths) {
+      assert.ok(
+        fs.existsSync(path.join(home, skillRoot, "uiux-storybook-architect", "SKILL.md")),
+        `missing global skill in ${skillRoot}`,
+      );
+    }
+    assert.equal(
+      fs.readdirSync(path.join(home, ".gemini", "config", "global_workflows"))
+        .filter((file) => file.startsWith("ux-")).length,
+      8,
+    );
+    assert.ok(!fs.existsSync(path.join(home, ".gemini", "antigravity", "skills")));
+    assert.ok(!fs.existsSync(path.join(destination, ".agents")));
+  } finally {
+    fs.rmSync(home, { recursive: true, force: true });
     fs.rmSync(destination, { recursive: true, force: true });
   }
 });
