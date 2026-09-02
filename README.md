@@ -427,6 +427,12 @@ npm run check
 
 `npm run check` runs the CLI test suite and an npm package dry run. CI runs on pushes and pull requests to `main`.
 
+## Automatic npm releases
+
+Every direct commit to `main` is published automatically after the complete CI workflow passes. The release workflow reruns the primary tests, inspects the npm tarball, increments the patch version from npm's current `latest`, publishes with provenance, and creates the synchronized version commit, Git tag, and GitHub release.
+
+To intentionally release a new minor or major version, update the package version in the feature commit with `npm version minor --no-git-tag-version` or `npm version major --no-git-tag-version`. See the [publishing guide](PUBLISHING.md) for authentication, versioning, race protection, and recovery details.
+
 ## Update
 
 Re-run the installer from the latest package:
