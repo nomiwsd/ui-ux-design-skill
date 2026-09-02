@@ -1,6 +1,6 @@
 {
   "name": "uiux-storybook-architect",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Interview-driven UI/UX design skill with 8 workflow commands for Claude Code, Codex, Antigravity, Cursor, Windsurf and VS Code Copilot. Turns vague briefs into distinctive, buildable Design Storybooks with art direction, tokens, copy, motion and accessibility.",
   "type": "module",
   "bin": {
