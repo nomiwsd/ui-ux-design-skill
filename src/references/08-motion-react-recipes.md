@@ -1,6 +1,8 @@
 # Motion (Framer Motion) Recipes
 
-**Path:** `src/references/10-motion-react-recipes.md`
+**Path:** `src/references/08-motion-react-recipes.md`
+
+Implementation recipes only. Which animations exist, and why, is decided in `06-motion.md` and recorded in the motion spec with a job per row.
 
 Framer Motion is now published as **Motion** (`npm i motion`, imported from `motion/react`). The older `framer-motion` package still works and the API is the same; use whichever the project already has.
 

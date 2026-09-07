@@ -9,22 +9,29 @@
 
    Replace every value marked [CHOOSE]. The structure, the role
    names, the spacing scale, the radius steps and the motion tokens
-   are sound defaults and can usually stay.
+   are sound starting shapes. Every value carries a trace tag in
+   03-design-tokens.md: [USER] [TASK] [CONTENT] [BUSINESS] [BRAND]
+   [CONTEXT] [A11Y].
 
    Rules:
    - Name by ROLE, never by value (--accent, not --purple-600)
    - No raw hex anywhere outside this file
-   - Neutrals are tinted toward the brand hue, never pure gray
-   - Dark mode is designed independently, not inverted
+   - Color is LAYERS: brand, semantic, state, surface, text, border,
+     data. Layers never share a hue by accident (04-visual-system.md §3)
+   - Neutral tint is a decision: tinted toward the brand hue for
+     branded surfaces; neutral gray for data, clinical, and
+     governmental surfaces where tint competes with meaning
+   - A second theme is designed independently, and only if warranted
    ============================================================= */
 
 :root {
   /* ---- Color: light theme ----
      [CHOOSE] all of these.
-     Neutral ramp: 7-9 steps, tinted a few points toward the brand hue.
-     Accent: ONE. Reserved for primary CTAs and active states only,
-     landing on roughly 10% of surface area. Avoid indigo/violet
-     defaults unless the brand genuinely owns that hue. */
+     Neutral ramp: 7-9 steps; tint decision recorded with its trace.
+     --accent is the primary ACTION color. On a single-action marketing
+     page it is reserved for the action and active states. On a data
+     surface it must be distinct from state and data colors, which
+     get their own layer below. */
   --bg-canvas:       #FF00FF;   /* [CHOOSE] page background */
   --bg-surface:      #FF00FF;   /* [CHOOSE] cards, panels */
   --bg-raised:       #FF00FF;   /* [CHOOSE] raised surfaces */
@@ -38,15 +45,37 @@
   --border-subtle:   #FF00FF;   /* [CHOOSE] hairline rules — consider 6-12% opacity */
   --border-strong:   #FF00FF;   /* [CHOOSE] emphasized dividers, input borders */
 
-  --accent:          #FF00FF;   /* [CHOOSE] the one accent */
+  --accent:          #FF00FF;   /* [CHOOSE] primary action color */
   --accent-hover:    #FF00FF;   /* [CHOOSE] */
-  --accent-subtle:   #FF00FF;   /* [CHOOSE] tinted background for accent contexts */
-  --accent-fg:       #FF00FF;   /* [CHOOSE] text on the accent — measure this pairing */
+  --accent-subtle:   #FF00FF;   /* [CHOOSE] tinted background for action contexts */
+  --accent-fg:       #FF00FF;   /* [CHOOSE] text on the action color — measure this pairing */
 
+  /* Semantic layer — fixed meanings, grayscale-distinct, each with an on-color */
   --success:         #FF00FF;   /* [CHOOSE] */
   --warning:         #FF00FF;   /* [CHOOSE] */
   --danger:          #FF00FF;   /* [CHOOSE] */
   --info:            #FF00FF;   /* [CHOOSE] */
+
+  /* State layer — selected is distinct from hover; focus passes 3:1 everywhere it appears */
+  --state-selected:     #FF00FF;   /* [CHOOSE] */
+  --state-selected-fg:  #FF00FF;   /* [CHOOSE] */
+  --focus-ring:         #FF00FF;   /* [CHOOSE] often the action color; verify 3:1 on every surface */
+
+  /* Optional: brand layer, when brand identity and the action color differ
+     (e.g. a brand hue that would collide with danger on a data surface).
+  --brand-primary:   #FF00FF;
+  --brand-secondary: #FF00FF;
+  */
+
+  /* Optional: data layer, for data-led products. Never shares a hue with
+     brand or semantic. Categorical steps must be distinguishable in
+     grayscale and for color-blind users.
+  --data-positive:   #FF00FF;
+  --data-negative:   #FF00FF;
+  --data-neutral:    #FF00FF;
+  --data-1: #FF00FF; --data-2: #FF00FF; --data-3: #FF00FF;
+  --data-4: #FF00FF; --data-5: #FF00FF; --data-6: #FF00FF;
+  */
 
   /* Layered shadows read better than one blurry drop shadow.
      [CHOOSE] the rgb() base to match your neutral hue, not pure black. */
@@ -55,16 +84,21 @@
   --shadow-lg: 0 12px 32px rgb(0 0 0 / .12), 0 2px 6px rgb(0 0 0 / .06);
 
   /* ---- Typography ----
-     [CHOOSE] both faces. Two max, fixed roles, third only for mono/data.
-     Do not default to Inter/Poppins/Montserrat as the display face. */
+     [CHOOSE] by property, not by list (04-visual-system.md §2.1):
+     x-height, aperture, width, weight range, script coverage,
+     tabular figures, distinctiveness, platform fit, loading cost.
+     One face is complete for most products; a display face only
+     when the headline must carry voice; mono only for code/data.
+     Confirm script coverage for every language in scope first. */
   --font-display: "CHOOSE-DISPLAY-FACE", Georgia, serif;
   --font-sans:    "CHOOSE-BODY-FACE", system-ui, -apple-system, sans-serif;
   --font-mono:    "CHOOSE-MONO-FACE", ui-monospace, monospace;
 
-  /* Type scale — generated from a ratio, not hand-picked.
-     1.25 for dense/app UI, 1.333+ for marketing.
-     Push display-to-body past 3.5x unless the direction is
-     utilitarian-dense. The values below are a starting shape. */
+  /* Type scale — generated from a ratio chosen by READING CONTEXT
+     (04-visual-system.md §2.2): 1.125-1.2 dense repeated use;
+     1.2-1.25 standard product UI; 1.25-1.333 marketing; 1.414+ only
+     when one statement carries the screen. The display:body ratio is
+     a consequence, not a target. The values below are a starting shape. */
   --text-display: clamp(2.5rem, 1.4rem + 4.6vw, 4.75rem);
   --text-h1:      clamp(2rem,   1.3rem + 2.8vw, 3.5rem);
   --text-h2:      clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem);
@@ -83,17 +117,19 @@
   --measure: 65ch;
 
   /* ---- Spacing (base-4) — safe to keep.
-     Use the scale, but vary section rhythm rather than applying
-     one value to every section. */
+     Spacing follows content weight on marketing surfaces and the
+     density decision on product surfaces. Uniform is correct for
+     reference and documentation pages; weighted is correct for a
+     narrative. Neither is a default. */
   --space-1: 4px;   --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
   --space-6: 24px;  --space-8: 32px;  --space-12: 48px; --space-16: 64px;
   --space-24: 96px; --space-32: 128px;
 
   /* ---- Radius ----
-     [CHOOSE] one position on the sharp<->soft axis and hold it.
-     Sharp (0-4px) reads technical/editorial; large (16-28px) reads
-     consumer/friendly. Mixing distant values is the most common
-     tell of an unconsidered surface. */
+     [CHOOSE] one scale of 2-3 steps and hold it. Position on the
+     sharp<->soft axis comes from brand (authoritative/technical toward
+     sharp; friendly/consumer toward soft) and platform (follow the OS
+     on native). Nested inner = outer - padding is correct, not mixing. */
   --radius-sm: 6px;      /* [CHOOSE] */
   --radius-md: 12px;     /* [CHOOSE] */
   --radius-lg: 24px;     /* [CHOOSE] */
@@ -117,12 +153,15 @@
   --stagger: 60ms;
 }
 
-/* ---- Dark theme ----
-   Design this independently. Do not invert the light set.
-   Base 8-12% lightness (never #000 — it causes halation).
+/* ---- Second theme (dark) ----
+   Only if warranted: low-light use, long sessions, platform
+   expectation, or user preference data (04-visual-system.md §3.6).
+   Otherwise delete this block and ship one theme well.
+   If kept: design it independently, never invert the light set.
+   Base 8-12% lightness (never #000 — halation on OLED).
    Elevation by LIGHTNESS, not heavier shadow.
-   Accents ~20 points less saturated than light mode.
-   Text off-white (~#E0E0E0), never pure white. */
+   Brand and semantic hues desaturated and lightened.
+   Text off-white, never pure white. Re-measure every pairing. */
 [data-theme="dark"] {
   --bg-canvas:      #7FFF00;   /* [CHOOSE] target #121212-#1A1A1A */
   --bg-surface:     #7FFF00;   /* [CHOOSE] one step lighter */
@@ -137,7 +176,7 @@
   --border-subtle:  #7FFF00;   /* [CHOOSE] */
   --border-strong:  #7FFF00;   /* [CHOOSE] */
 
-  --accent:         #7FFF00;   /* [CHOOSE] desaturated ~20 points vs light */
+  --accent:         #7FFF00;   /* [CHOOSE] desaturated and lightened vs light */
   --accent-hover:   #7FFF00;   /* [CHOOSE] */
   --accent-subtle:  #7FFF00;   /* [CHOOSE] */
   --accent-fg:      #7FFF00;   /* [CHOOSE] */
@@ -146,6 +185,10 @@
   --warning:        #7FFF00;   /* [CHOOSE] */
   --danger:         #7FFF00;   /* [CHOOSE] */
   --info:           #7FFF00;   /* [CHOOSE] */
+
+  --state-selected:     #7FFF00;   /* [CHOOSE] */
+  --state-selected-fg:  #7FFF00;   /* [CHOOSE] */
+  --focus-ring:         #7FFF00;   /* [CHOOSE] re-verify 3:1 on dark surfaces */
 
   /* Shadows barely read on dark — elevation comes from lightness above */
   --shadow-sm: 0 1px 2px rgb(0 0 0 / .5);
@@ -168,9 +211,9 @@ html { color-scheme: light dark; }
   }
 }
 
-/* Focus: visible, high-contrast, never removed */
+/* Focus: visible, high-contrast, never removed, never obscured by sticky chrome (WCAG 2.4.11) */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }

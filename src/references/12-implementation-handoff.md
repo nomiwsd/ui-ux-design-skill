@@ -1,6 +1,6 @@
 # Implementation Handoff
 
-**Path:** `src/references/13-implementation-handoff.md`
+**Path:** `src/references/12-implementation-handoff.md`
 
 ## Tokens first, always
 
@@ -31,9 +31,9 @@ Tailwind v4 reads CSS variables directly, so tokens and utilities stay in one pl
   --color-canvas: var(--bg-canvas);
   --color-surface: var(--bg-surface);
   --color-accent: var(--accent);
-  --font-display: "Fraunces", serif;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --radius-md: 12px;
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --radius-md: var(--radius-md);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 ```
@@ -84,12 +84,15 @@ Give every component a story per variant and per state, add the a11y addon (it r
 - [ ] Screen-reader pass on the primary flow
 - [ ] `prefers-reduced-motion` pass — the site is complete and usable with all motion off
 - [ ] Lighthouse mobile: performance ≥90, accessibility 100, best practices ≥95
-- [ ] Tested at 320px width and 200% zoom
-- [ ] Empty, loading, and error states exist for every data-driven view
+- [ ] Tested at 320px width and 200% zoom; text spacing overrides survive
+- [ ] Targets ≥24px everywhere, ≥44px on touch; focus never obscured by sticky chrome
+- [ ] Empty, no-results, loading, error, and partial states exist for every data view
+- [ ] Every reflow decision in the blueprints is implemented as specified
+- [ ] Density measured on the rendered product matches the context profile
 - [ ] README documents how to change a token and where the design storybook lives
 
 ## Handing the storybook to another agent
 
 The `design/` folder is written so a fresh agent session can build from it cold. When starting a build in a new session or a different IDE, point at it explicitly:
 
-> Read `design/00-brief.md` through `design/09-build-plan.md`, then implement in the order given in the build plan. Use only tokens from `design/tokens/tokens.css`. Follow the chosen direction in `design/01-art-direction.md` exactly, including the section rhythm and the signature element. Do not invent colors, spacing, copy, or animations that are not in the spec — if something is missing, ask before improvising.
+> Read `design/00-brief.md` through `design/09-build-plan.md`, then implement in the order given in the build plan. Use only tokens from `design/tokens/tokens.css`. Follow the chosen direction in `design/01-direction.md` exactly, including the navigation model or section order, the density decision, and every reflow decision. Do not invent colors, spacing, copy, or animations that are not in the spec — if something is missing, ask before improvising.

@@ -230,7 +230,7 @@ function ask(q) {
 function banner() {
   log();
   log(`  ${c.b("UI/UX Storybook Architect")} ${c.dim("v" + VERSION)}`);
-  log(`  ${c.dim("Distinctive UI/UX direction + 8 workflow commands for every agentic IDE")}`);
+  log(`  ${c.dim("Context-driven UI/UX direction + 8 workflow commands for every agentic IDE")}`);
   log();
 }
 
@@ -324,7 +324,7 @@ async function cmdInit(args) {
   log();
   log(`    ${c.cy("/ux-discover")} a landing page for a fintech app aimed at 55+ users`);
   log();
-  log(`  ${c.dim("It must ask you 8 numbered questions before designing anything.")}`);
+  log(`  ${c.dim("It must ask you numbered questions with drafted options before designing anything.")}`);
   log(`  ${c.dim("If it starts designing immediately, the skill did not load — run:")} ${c.cy("npx " + NAME + " doctor")}`);
   log();
   log(`  ${c.b("Verify per IDE")}`);
@@ -438,7 +438,7 @@ function cmdEject(args) {
   log(`  Edit it, then install your version from that folder:`);
   log(`    ${c.cy(`npx ${NAME} init --src ${path.relative(process.cwd(), dest) || "."}`)}`);
   log();
-  log(`  ${c.dim("Best first edits: SKILL.md defaults table, references/04-visual-styles.md (your house style), assets/tokens.template.css")}`);
+  log(`  ${c.dim("Best first edits: references/00-design-reasoning.md (pipeline, context model), references/02-marketing-ux.md and 03-product-ux.md (category notes), assets/tokens.template.css")}`);
   log();
 }
 

@@ -1,8 +1,8 @@
 # GSAP Recipes (ScrollTrigger, SplitText, Flip, Lenis)
 
-**Path:** `src/references/09-gsap-recipes.md`
+**Path:** `src/references/07-gsap-recipes.md`
 
-GSAP and its plugins — ScrollTrigger, SplitText, ScrollSmoother, Flip, DrawSVG, MorphSVG — are free for commercial use since the Webflow acquisition (2025). Install `gsap` and, for React, `@gsap/react`.
+Implementation recipes only. Which animations exist, and why, is decided in `06-motion.md` and recorded in the motion spec with a job per row. GSAP and its plugins — ScrollTrigger, SplitText, ScrollSmoother, Flip, DrawSVG, MorphSVG — are free for commercial use. Install `gsap` and, for React, `@gsap/react`.
 
 ```bash
 npm i gsap @gsap/react
@@ -62,7 +62,7 @@ mm.add({
 });
 ```
 
-## Reveal on scroll (the 80% case)
+## Reveal on scroll (storytelling job only — narrative marketing pages, never product surfaces)
 
 ```js
 gsap.utils.toArray("[data-reveal]").forEach((el) => {

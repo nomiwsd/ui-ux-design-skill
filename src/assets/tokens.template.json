@@ -1,6 +1,6 @@
 {
   "$schema": "https://design-tokens.org/schema.json",
-  "_README": "TEMPLATE — NOT SHIPPABLE. Every #FF00FF (light) and #7FFF00 (dark) is a tripwire placeholder that must be replaced. If these render in a browser, the tokens were never chosen. Name by role, never by value. Neutrals tint toward the brand hue. Dark mode is designed independently, not inverted.",
+  "_README": "TEMPLATE — NOT SHIPPABLE. Every #FF00FF (light) and #7FFF00 (dark) is a tripwire placeholder that must be replaced. If these render in a browser, the tokens were never chosen. Name by role, never by value. Color is layers (brand, semantic, state, surface, text, border, data) that never share a hue by accident. Neutral tint is a decision with a trace. A second theme exists only if warranted and is designed independently.",
   "color": {
     "light": {
       "bg-canvas": "#FF00FF",
@@ -20,10 +20,14 @@
       "success": "#FF00FF",
       "warning": "#FF00FF",
       "danger": "#FF00FF",
-      "info": "#FF00FF"
+      "info": "#FF00FF",
+      "state-selected": "#FF00FF",
+      "state-selected-fg": "#FF00FF",
+      "focus-ring": "#FF00FF",
+      "_optional": "brand-primary, brand-secondary when brand identity and action color differ; data-positive, data-negative, data-neutral, data-1..6 for data-led products — never sharing a hue with brand or semantic"
     },
     "dark": {
-      "_note": "Base 8-12% lightness, never #000. Elevation by lightness. Accents desaturated ~20 points. Text off-white, never #FFF.",
+      "_note": "Only if warranted (low light, long sessions, platform expectation). Base 8-12% lightness, never #000. Elevation by lightness. Hues desaturated and lightened. Text off-white, never #FFF. Re-measure every pairing.",
       "bg-canvas": "#7FFF00",
       "bg-surface": "#7FFF00",
       "bg-raised": "#7FFF00",
@@ -41,17 +45,20 @@
       "success": "#7FFF00",
       "warning": "#7FFF00",
       "danger": "#7FFF00",
-      "info": "#7FFF00"
+      "info": "#7FFF00",
+      "state-selected": "#7FFF00",
+      "state-selected-fg": "#7FFF00",
+      "focus-ring": "#7FFF00"
     }
   },
   "font": {
-    "_note": "Two faces max, fixed roles. Do not default to Inter/Poppins/Montserrat as display.",
+    "_note": "Choose by property (x-height, width, script coverage, tabular figures, distinctiveness, platform fit), not by list. One face is complete for most products; display only when the headline carries voice; mono only for code/data. Confirm script coverage first.",
     "display": "CHOOSE-DISPLAY-FACE, Georgia, serif",
     "sans": "CHOOSE-BODY-FACE, system-ui, sans-serif",
     "mono": "CHOOSE-MONO-FACE, ui-monospace, monospace"
   },
   "fontSize": {
-    "_note": "Generated from a ratio (1.25 dense / 1.333+ marketing). Push display-to-body past 3.5x unless utilitarian-dense.",
+    "_note": "Generated from a ratio chosen by reading context: 1.125-1.2 dense repeated use; 1.2-1.25 product UI; 1.25-1.333 marketing; 1.414+ only when one statement carries the screen. Display:body ratio is a consequence, not a target.",
     "display": "clamp(2.5rem, 1.4rem + 4.6vw, 4.75rem)",
     "h1": "clamp(2rem, 1.3rem + 2.8vw, 3.5rem)",
     "h2": "clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem)",
@@ -63,7 +70,7 @@
   },
   "space": { "1": "4px", "2": "8px", "3": "12px", "4": "16px", "6": "24px", "8": "32px", "12": "48px", "16": "64px", "24": "96px", "32": "128px" },
   "radius": {
-    "_note": "CHOOSE one position on the sharp<->soft axis and hold it.",
+    "_note": "CHOOSE one scale of 2-3 steps and hold it; position from brand and platform. Nested inner = outer - padding is correct.",
     "sm": "6px", "md": "12px", "lg": "24px", "full": "999px"
   },
   "duration": { "instant": "80ms", "fast": "150ms", "base": "250ms", "slow": "400ms", "slower": "600ms" },

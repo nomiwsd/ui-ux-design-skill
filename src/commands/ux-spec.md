@@ -1,6 +1,6 @@
 ---
-description: Write the Design Storybook — tokens, type, color, themes, IA, components, page blueprints
-argument-hint: [scope: all | tokens | type | color | dark-mode | ia | components | pages]
+description: Write the Design Storybook — tokens, type, color, themes, IA, components, page and screen blueprints
+argument-hint: [scope: all | tokens | type | color | theme | ia | components | pages]
 ---
 
 # /ux-spec — The Design Storybook
@@ -13,63 +13,62 @@ Scope: $ARGUMENTS  (default `all`)
 
 ## Preflight
 
-- `design/00-brief.md` **and** `design/01-art-direction.md` with a chosen direction exist → read both, design from them, ask nothing. Name in one line which persona and which of the top-3 tasks this serves.
+- `design/00-brief.md` **and** `design/01-direction.md` (or legacy `01-art-direction.md`) with a chosen direction exist → read both, design from them, ask nothing. Name in one line the context profile, the surface type, and which top task this scope serves.
 - Brief missing, new site or full redesign → run `/ux-discover`, then `/ux-direction`. Say so in one line and stop. Do not produce partial output.
-- Brief exists but no chosen direction, and scope is `all`, `tokens`, `type`, `color`, or `pages` → run `/ux-direction` first. These are the outputs that carry the look, and picking them without a direction is how the average gets built.
-- Existing codebase, small addition → no interview. Read existing tokens, components, styles; match them; state in one line what you matched. Ban list still applies to anything new.
-- Single narrow decision (`dark-mode`, one component) → proceed directly, stating any inference in one line, specific to this product. Never use a stock assumption sentence.
+- Brief exists but no chosen direction, and scope is `all`, `ia`, or `pages` → run `/ux-direction` first. These are the outputs that carry the strategy.
+- Brief exists, no direction, and scope is `tokens`, `type`, `color`, or `theme` → proceed, stating the assumed direction in one line with its trace; flag that `/ux-direction` would sharpen it.
+- Existing codebase, small addition → no interview. Read existing tokens, components, styles; match them; state in one line what you matched and which surface type this is.
+- Single narrow decision → proceed directly, stating the inferred context profile in one line specific to this product.
 
-Always read `{{SKILL_PATH}}/references/00-anti-slop.md` before producing values.
+Always read `{{SKILL_PATH}}/references/00-design-reasoning.md` before producing values.
 
 ## Scopes
 
 | Scope | Reads | Writes |
 |---|---|---|
-| `tokens` | `03-typography-color-theming.md`, `assets/tokens.template.*` | `tokens/tokens.css`, `tokens/tokens.json`, `03-design-tokens.md` |
-| `type` | `03-typography-color-theming.md`, `15-composition.md` | `04-typography-and-color.md` (type half) + type tokens |
-| `color` | `03-typography-color-theming.md` | `04-typography-and-color.md` (color half) + color tokens |
-| `dark-mode` | `03-typography-color-theming.md` (theming) | dark token set + contrast table |
-| `ia` | `02-foundations.md`, `05-website-type-patterns.md` | `02-information-architecture.md` |
-| `components` | `12-storybook-template.md`, `07-craft-and-accessibility.md` | `05-components.md` |
-| `pages` | `references/17-section-library.md`, `references/blueprints/00-index.md` + the matching `references/blueprints/<type>.md`, `15-composition.md`, `16-copy-voice.md` | `06-page-blueprints.md` |
-| `all` | the above plus `06-age-inclusive-design.md`, `08-motion-system.md` | the full `design/` tree |
+| `tokens` | `04-visual-system.md` §2–4, `assets/tokens.template.*` | `tokens/tokens.css`, `tokens/tokens.json`, `03-design-tokens.md` |
+| `type` | `04-visual-system.md` §2 | `04-typography-and-color.md` (type half) + type tokens |
+| `color` | `04-visual-system.md` §3 | `04-typography-and-color.md` (color half) + color tokens |
+| `theme` | `04-visual-system.md` §3.6 | second-theme token set + contrast table, or a recorded decision not to ship one |
+| `ia` | `02-marketing-ux.md` §1 and/or `03-product-ux.md` §1–3 by surface | `02-information-architecture.md` |
+| `components` | `11-storybook-template.md`, `03-product-ux.md` §3–4, `05-responsive-accessibility.md` §1 | `05-components.md` |
+| `pages` | `02-marketing-ux.md` §1, §3–4 and/or `03-product-ux.md` §4, §7 by surface; `10-copy-voice.md`; `05-responsive-accessibility.md` §5 | `06-page-blueprints.md` |
+| `all` | the above plus `05-responsive-accessibility.md` §1–4, `06-motion.md` | the full `design/` tree |
 
 ## Rules that apply to every scope
 
-**Never ship a template default.** The starter files are illustrative. If the output contains the example accent, the example neutral ramp, the example font pairing, or the example radius scale unchanged, the command has failed. Diff your output against the templates before presenting and state what changed.
+**Reason before styling.** Every value derives from the brief, the direction, and the interaction model. A value with no trace is not finished.
 
-**Name tokens by role, never by value.** `--accent`, not `--purple-600`.
+**Never ship a template default.** The starter files are tripwires. If the output contains the placeholder colors, the placeholder fonts, or any example value from a reference, the command has failed. Diff against the templates and state what changed.
 
-**Measure, don't estimate.** Every foreground/background pairing that will actually appear gets a computed contrast ratio in a table, in both themes, with pass/fail against 4.5:1 body and 3:1 large/UI. Fix failures before presenting. "Looks fine" is not a measurement.
+**Name tokens by role, never by value.** `--action`, not `--purple-600`.
 
-**Dark mode is designed, not inverted.** Base 8–12% lightness, elevation by lightness rather than shadow, accents desaturated ~20 points, text near `#E0E0E0`. Run its contrast checks independently.
+**Separate color layers.** Brand, semantic, state, surface, text, border, and (for data-led products) data. Never let two layers share a hue by accident.
+
+**Measure, don't estimate.** Every foreground/background pairing that will appear gets a computed ratio in a table, in every theme, against 4.5:1 body and 3:1 large, UI, and focus. Fix failures before presenting.
+
+**Surface-aware.** Marketing pages get message hierarchy and derived order. Product screens get navigation model, home job, interaction model, density, and five states. Never mix.
 
 ## Scope specifics
 
-**tokens** — full set: color (light + dark), typography, spacing (base-4), radius, elevation, layout, motion. Emit the framework mapping if a stack is known (Tailwind v4 `@theme`, v3 `theme.extend`, or equivalent) and the pre-paint theme script so there's no flash of the wrong theme.
+**tokens** — full set: color layers (every theme), typography, spacing, radius, elevation, layout, motion. Tiering per `04` §3.7: flat semantic roles unless multiple themes, platforms, or brands justify tiers. Framework mapping if the stack is known (Tailwind v4 `@theme`, v3 `theme.extend`, or equivalent) and the pre-paint theme script if a second theme exists.
 
-**type** — one recommended pairing plus two alternates, one line of reasoning each. Body face judged on legibility at 16px in a real paragraph, not on personality. Build the scale from a ratio as `clamp()` values, and push display-to-body past 3.5× unless the density pole is utilitarian. Loading strategy: self-hosted variable woff2, `font-display: swap`, one preloaded file, fallback stack with `size-adjust`.
+**type** — faces chosen by property (`04` §2.1) with script coverage confirmed; one recommended pairing (or a single face, if that is correct) plus two alternates, one line of reasoning each with tags. Ratio from reading context (`04` §2.2), generated as `clamp()` values. Longest real headline tested at 375px. Loading strategy: self-hosted variable woff2, `font-display: swap`, one preload, fallback with `size-adjust`.
 
-**color** — hue direction from audience and category with the reason in one line. 60/30/10 split, a 7–9 step neutral ramp **tinted toward the brand hue**, four semantics, both themes. State explicitly what the accent is reserved for and what must never use it. If a logo exists, sample from it rather than inventing a competing palette.
+**color** — brand hue from assets, differentiation, and cultural context (`04` §3.2), never from a psychology table. Neutral tint decision with its trace (`04` §3.3). Distribution rule by surface (`04` §3.4). Semantic and state layers distinct from brand. Data palette when data-led. If a logo exists, sample it.
 
-**dark-mode** — if existing CSS was given, audit it first for pure black, pure white text, saturated accents, shadow-based elevation, hardcoded hex, missing `color-scheme`. Then deliver the palette, the switching mechanism, and a list of every non-token surface that will break: images, iframes, third-party widgets, charts, code blocks, maps.
+**theme** — first decide whether a second theme is warranted (`04` §3.6 WHEN); record the decision either way. If yes and existing CSS was given, audit it first for pure black, pure white text, saturated accents, shadow-based elevation, hardcoded hex, missing `color-scheme`. Deliver the palette, the switching mechanism, and every non-token surface that will break: images, iframes, embeds, charts, code blocks, maps.
 
-**ia** — sitemap, one flow per top-3 task as a step sequence with friction points and design responses, page inventory table, content model for anything CMS-driven. Flag any page where the primary action is more than one click from an entry point, and any hierarchy deeper than three levels.
+**ia** — by surface. Marketing: sitemap, message hierarchy, decision journey, content model, navigation. Product: entity model, navigation model with trace, home-screen job, screen inventory, one flow per top task with path length against budget, interaction model (input, disclosure tiers, feedback tiers, state visibility, error prevention, destructive-action model, permissions, validation). Flag any top task over its path budget and any hierarchy deeper than three levels on a marketing site.
 
-**components** — variants, sizes, anatomy, and a state table covering default / hover / focus-visible / active / disabled / loading / error / empty, plus accessibility notes and a "don't" line. With `all`: button, link, input, select, checkbox/radio, toggle, card, badge, tooltip, modal, drawer, toast, tabs, accordion, table, pagination, nav, footer, skeleton, empty state, error state. Every value references a token.
+**components** — variants, sizes, anatomy, and a state table covering default / hover / focus-visible / active / disabled / loading / error / empty (and selected where relevant), plus responsive behavior, accessibility notes (name, role, keyboard, focus), and a "don't" line. With `all`: button, link, input, select, checkbox/radio, toggle, card, badge, tooltip, dialog, drawer, toast, tabs, accordion, table, pagination, nav, footer, skeleton, empty state, error state. Every value references a token.
 
-**pages** — read `references/17-section-library.md` for section anatomy and the matching file in `references/blueprints/` for the category page inventory. Per page: goal, primary action, what sits above the fold on mobile, then numbered sections with layout, real draft copy, visual treatment, motion IDs, spacing, and states. Also required:
-- **The belief sequence written out first**, and the section order derived from it — not from a category template (method: `references/blueprints/00-index.md`).
-- **A named layout variant per section** from `references/17-section-library.md`. Never variant 1 by reflex; state why each was chosen.
-- **A written rhythm sequence** (`full-bleed → tight → tight → open → dense → open → tight`). If it's uniform, redo it.
-- **The signature element** from the art direction, placed on a specific page in a specific section.
-- Real draft copy per `16-copy-voice.md`. Never lorem ipsum, never invented testimonials or statistics — use `[TESTIMONIAL — needs a real customer quote]`.
-- Mobile changes and edge cases: longest realistic headline, missing testimonials, empty states.
+**pages** — by surface. **Marketing:** message hierarchy written first; section order derived from the decision journey with a reason per row (`02` §1.2); a named option per section with its trace (`02` §4); rhythm following stated weights; real draft copy per `10-copy-voice.md`; a reflow decision per section (`05` §5); first screen at 375×667. **Product:** navigation model and home job; per screen: purpose, primary action, regions with density, five states, keyboard behavior, reflow decision per region (`03` §4, `05` §5). Both: mobile changes and edge cases (longest real headline or name, no imagery, zero data, slow network).
 
-Check every section against the top 3 tasks. Cut anything serving none of them.
+Check every section or screen against the top tasks. Cut anything serving none.
 
 ## Finish
 
-Run the Storybook quality gate in `SKILL.md`. Do not present until every box passes — including the ban-list self-check and the "no template default survived" check.
+Run the Storybook gate in `SKILL.md`, the self-check in `00-design-reasoning.md`, and the Specificity Score in `13-validation.md`. Do not present under 70, or with the interchangeability question unanswered.
 
-Close with: the design direction in 3 lines, the 3 decisions most worth challenging, and the next command (`/ux-copy` or `/ux-build`).
+Close with: the strategy in 3 lines, the 3 decisions most worth challenging with their tags, and the next command (`/ux-copy`, `/ux-motion`, or `/ux-build`).

@@ -1,6 +1,7 @@
 # CLAUDE.md — UI/UX work
 
-Identical rules to `AGENTS.md` in this folder. Claude Code reads `CLAUDE.md`; other agents read
-`AGENTS.md`. Keep the two in sync — if you edit one, edit the other.
+The canonical agent rules live in `../AGENTS.md` (installed as `AGENTS.md` at the skill root).
+Claude Code reads `CLAUDE.md`; other agents read `AGENTS.md`. The installer appends the same
+text to whichever project rules file the IDE uses, so there is one source of truth.
 
-See `../AGENTS.md` for the canonical text.
+Start with `SKILL.md`, then `references/00-design-reasoning.md`, before any design decision.

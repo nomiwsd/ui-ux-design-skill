@@ -1,10 +1,11 @@
 # agents/
 
-Agent-facing entry files, copied to the consuming repo root by the installer in `bin/`.
+Agent-facing entry metadata.
 
 | File | Consumed by |
 |---|---|
-| `AGENTS.md` | Antigravity, Codex, Cursor, Windsurf, and any agent reading AGENTS.md |
-| `CLAUDE.md` | Claude Code |
+| `../AGENTS.md` | Canonical rules. Copied to the skill root and appended to the project's `AGENTS.md`, `CLAUDE.md`, or IDE rules file by the installer in `bin/` |
+| `CLAUDE.md` | Pointer for Claude Code readers browsing the skill folder |
+| `openai.yaml` | Interface metadata for registries (display name, default prompt) |
 
-Both must carry the same rules. The canonical text lives in `AGENTS.md`.
+There is one copy of the rules. Edit `../AGENTS.md`.

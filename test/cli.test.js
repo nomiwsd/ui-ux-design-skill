@@ -75,12 +75,14 @@ test("project installation is complete, additive, and safe to repeat", () => {
     assert.ok(fs.existsSync(path.join(skill, "SKILL.md")));
     assert.ok(fs.existsSync(path.join(skill, "AGENTS.md")));
     assert.ok(fs.existsSync(path.join(skill, "agents", "openai.yaml")));
-    assert.equal(countFiles(path.join(skill, "references")), 26);
-    assert.equal(countFiles(path.join(skill, "docs")), 3);
-    assert.ok(fs.existsSync(path.join(skill, "references", "00-anti-slop.md")));
-    assert.ok(
-      fs.existsSync(path.join(skill, "references", "blueprints", "saas.md")),
-    );
+    assert.equal(countFiles(path.join(skill, "references")), 14);
+    assert.equal(countFiles(path.join(skill, "docs")), 4);
+    assert.ok(fs.existsSync(path.join(skill, "references", "00-design-reasoning.md")));
+    assert.ok(fs.existsSync(path.join(skill, "references", "02-marketing-ux.md")));
+    assert.ok(fs.existsSync(path.join(skill, "references", "03-product-ux.md")));
+    assert.ok(fs.existsSync(path.join(skill, "references", "13-validation.md")));
+    assert.ok(!fs.existsSync(path.join(skill, "references", "blueprints")));
+    assert.ok(!fs.existsSync(path.join(skill, "references", "00-anti-slop.md")));
     assert.equal(
       fs.readdirSync(commands).filter((file) => file.startsWith("ux-")).length,
       8,
@@ -88,6 +90,7 @@ test("project installation is complete, additive, and safe to repeat", () => {
     assert.ok(!fs.existsSync(path.join(commands, "ux-3d.md")));
     assert.match(rules, /^# Existing project rules/m);
     assert.equal(rules.match(/uiux-storybook-architect/g)?.length, 1);
+    assert.match(rules, /00-design-reasoning\.md/);
   } finally {
     fs.rmSync(destination, { recursive: true, force: true });
   }
